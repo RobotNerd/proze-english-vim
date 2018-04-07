@@ -3,11 +3,11 @@ if exists('b:current_syntax') && b:current_syntax == 'prose'
   finish
 endif
 
-" quoted strings
-syn region proseString start=+"+ end=+\v"|\n\n+
+" " quoted strings
+" syn region proseString start=+"+ end=+\v"|\n\n+
 
-" Metadata markup
-syn match proseMetadata /\vTitle:/
+" Test with keywords
+syn keyword proseKeyword Title Author
 
 " " section header
 " syn match proseSection "^[A-Za-z\.].*$"
@@ -56,8 +56,8 @@ syn match proseMetadata /\vTitle:/
 " " - can be nested in () or {}
 " syn match proseHashtag "\v(\s+|\(|\{)@<=(\@|#)[A-Za-z0-9\-_]+"
 
-hi def link proseString String
-hi def link proseMetadata Identifier
+" hi def link proseString String
+hi def link proseKeyword Link
 " hi def link proseObjAssign Identifier
 " hi def link proseSection Underlined
 " hi def link proseQuestion Exception
