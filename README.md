@@ -10,7 +10,7 @@ Follow the instructions to install
 add the following line to your `.vimrc` file:
 
 ```
-Plugin 'robotnerd/prose-vim'
+Plugin 'robotnerd/prose-english-vim'
 ```
 
 Then launch vim and run the command `:PluginInstall`.
