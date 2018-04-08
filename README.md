@@ -1,7 +1,7 @@
 # Prose format: vim plugin
 
 This vim plugin provides syntax highlighting for
-[prose](https://github.com/robotnerd/prose-format) documents.
+[prose](https://github.com/RobotNerd/prose-english-format) documents.
 
 ### Installation
 
