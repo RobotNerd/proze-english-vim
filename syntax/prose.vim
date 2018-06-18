@@ -36,6 +36,12 @@ hi def link proseBracket Debug
 hi def link proseComment Comment
 hi def link proseComment Comment
 
+" These syntax values are set when loaded from the config file.
+hi def link proseCharacter Function
+hi def link prosePlace Debug
+hi def link proseThing Special
+hi def link proseInvalid Error
+
 " TODO: Options for highlighting names
 " - Function
 " - Special
