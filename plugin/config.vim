@@ -2,15 +2,30 @@
 
 " TODO Try to determine filetype based on contents instead of extension.
 " TODO Parse compilation options
+" TODO Update to support unicode
 
 
 " Parse JSON formatted config file.
 " @param path Path to the config file.
 " @return Structured data parsed from the config file.
 function ProseParseJson(path)
-  let raw = readfile(a:path)
   let data = { 'names': {}, 'compile': {} }
-  " TODO
+  py import json
+  py import vim
+  py f = open(vim.eval("a:path"), 'r')
+  py parsed = json.loads(f.read())
+  py f.close()
+
+  " The python u' prefix for unicode strings is removed by forcing ASCII.
+  py names = parsed['names']
+  py characters = [x.encode('ascii') for x in names['characters']] if names['characters'] else []
+  py places = [x.encode('ascii') for x in names['places']] if names['places'] else []
+  py things = [x.encode('ascii') for x in names['things']] if names['things'] else []
+  py invalid = [x.encode('ascii') for x in names['invalid']] if names['invalid'] else []
+  py vim.command("let data.names.characters = " + str(characters))
+  py vim.command("let data.names.places = " + str(places))
+  py vim.command("let data.names.things = " + str(things))
+  py vim.command("let data.names.invalid = " + str(invalid))
   return data
 endfunction
 

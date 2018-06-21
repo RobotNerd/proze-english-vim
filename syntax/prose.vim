@@ -10,7 +10,7 @@ syn region proseBold start=+__+ end=+\v__|\n\n+
 syn region proseItalic start=+*+ end=+\v*|\n\n+
 
 " quoted strings
-syn region proseString start=+"+ end=+\v"|\n\n+ contains=proseBold,proseItalic
+syn region proseString start=+"+ end=+\v"|\n\n+ contains=proseBold,proseItalic,proseCharacter,prosePlace,proseThing,proseInvalid
 
 " Structural markup
 syn match proseStructuralMarkup "\v\c(title|chapter|author|section):(.*)\n"
@@ -25,7 +25,7 @@ syn region proseComment start=+\v(\\#?)@<!##+ end=+$+ keepend contains=proseTodo
 syn region proseComment start=+\v\\@<!###+ end=+\v\\@<!###+ keepend contains=proseTodo
 
 " bracket
-syn region proseBracket start=+\v\\@<!\[+ end=+\v\\@<!\]+ keepend contains=proseTodo
+syn region proseBracket start=+\v\\@<!\[+ end=+\v\\@<!\]+ keepend contains=proseTodo,proseCharacter,prosePlace,proseThing,proseInvalid
 
 hi def link proseBold Statement
 hi def link proseItalic Boolean
