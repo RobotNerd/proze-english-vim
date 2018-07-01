@@ -20,21 +20,61 @@ with a `*.prose` extension.
 
 ## Configure spell checking
 
-To automatically turn on spell checking whenever a prose document is
-opened, add an augroup section to your .vimrc file. Here's an example
-that uses the US English dictionary.
+Turn on spell checking using the US English dictionary.
 
-```
-augroup spelling
-  autocmd!
-  autocmd BufRead,BufNewFile *.prose setlocal spell spelllang=en_us
-augroup END
+```viml
+setlocal spell spelllang=en_us
 ```
 
-You can also change the default highlighting used when spell checking.
-Here is an example that underlines any misspelled words.
+The configuration highlights misspelled words by underlining them.
 
-```
+```viml
 hi clear SpellBad
 hi SpellBad cterm=underline
+```
+
+## Other configuration options
+
+Tabs:
+```viml
+set tabstop=2
+setl expandtab
+set shiftwidth=2
+```
+
+Text wrapping:
+```viml
+set wrap
+set linebreak
+map j gj
+map k gk
+```
+
+Column width:
+```viml
+set columns=80
+```
+
+## Sample `.vimrc`
+
+Here are sample configuration block that can be added to your `.vimrc`
+file for prose support.
+
+```viml
+" Apply custom configuration for prose documents.
+augroup proseConfig
+  autocmd!
+  autocmd BufRead,BufNewFile *.prose
+    \ set tabstop=2 |
+    \ setl expandtab |
+    \ set shiftwidth=2 |
+    \ set wrap |
+    \ set linebreak |
+    \ map j gj |
+    \ map k gk |
+    \ set columns=80 |
+    \ setlocal spell spelllang=en_us |
+    \ hi clear SpellBad |
+    \ hi SpellBad cterm=underline
+augroup END
 ```
