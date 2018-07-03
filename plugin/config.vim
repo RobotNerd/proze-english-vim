@@ -7,40 +7,19 @@
 
 " Parse JSON formatted config file.
 " @param path Path to the config file.
+" @param filetype Either json or yaml.
 " @return Structured data parsed from the config file.
-function ProseParseJson(path)
+function ProseParseNames(path, filetype)
   let data = { 'names': {}, 'compile': {} }
 python3 << EOF
-import json
 import vim
 with open(vim.eval("a:path"), 'r') as f:
-  parsed = json.loads(f.read())
-
-# The python u' prefix for unicode strings is removed by forcing ASCII.
-names = parsed.get('names')
-characters = names.get('characters') if names.get('characters') else []
-places = names.get('places') if names.get('places') else []
-things = names.get('things') if names.get('things') else []
-invalid = names.get('invalid') if names.get('invalid') else []
-vim.command("let data.names.characters = " + str(characters))
-vim.command("let data.names.places = " + str(places))
-vim.command("let data.names.things = " + str(things))
-vim.command("let data.names.invalid = " + str(invalid))
-EOF
-  return data
-endfunction
-
-
-" Parse YAML formatted config file.
-" @param path Path to the config file.
-" @return Dictionary containing lists of names parsed.
-function ProseParseYaml(path)
-  let data = { 'names': {}, 'compile': {} }
-python3 << EOF
-import yaml
-import vim
-with open(vim.eval("a:path"), 'r') as f:
-  parsed = yaml.safe_load(f)
+  if vim.eval("a:filetype") == 'json':
+    import json
+    parsed = json.loads(f.read())
+  elif vim.eval("a:filetype") == 'yaml':
+    import yaml
+    parsed = yaml.safe_load(f)
 names = parsed.get('names')
 characters = names.get('characters') if names.get('characters') else []
 places = names.get('places') if names.get('places') else []
@@ -62,11 +41,11 @@ function ProseParseConfig()
   let path = findfile('config.yml')
   let data = 0
   if path != ''
-    let data = ProseParseYaml(path)
+    let data = ProseParseNames(path, 'yaml')
   else
     let path = findfile('config.json')
     if path != ''
-      let data = ProseParseJson(path)
+      let data = ProseParseNames(path, 'json')
     endif
   endif
   return data
