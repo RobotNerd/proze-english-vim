@@ -10,22 +10,23 @@
 " @return Structured data parsed from the config file.
 function ProseParseJson(path)
   let data = { 'names': {}, 'compile': {} }
-  py import json
-  py import vim
-  py f = open(vim.eval("a:path"), 'r')
-  py parsed = json.loads(f.read())
-  py f.close()
+python3 << EOF
+import json
+import vim
+with open(vim.eval("a:path"), 'r') as f:
+  parsed = json.loads(f.read())
 
-  " The python u' prefix for unicode strings is removed by forcing ASCII.
-  py names = parsed['names']
-  py characters = [x.encode('ascii') for x in names['characters']] if names['characters'] else []
-  py places = [x.encode('ascii') for x in names['places']] if names['places'] else []
-  py things = [x.encode('ascii') for x in names['things']] if names['things'] else []
-  py invalid = [x.encode('ascii') for x in names['invalid']] if names['invalid'] else []
-  py vim.command("let data.names.characters = " + str(characters))
-  py vim.command("let data.names.places = " + str(places))
-  py vim.command("let data.names.things = " + str(things))
-  py vim.command("let data.names.invalid = " + str(invalid))
+# The python u' prefix for unicode strings is removed by forcing ASCII.
+names = parsed.get('names')
+characters = names.get('characters') if names.get('characters') else []
+places = names.get('places') if names.get('places') else []
+things = names.get('things') if names.get('things') else []
+invalid = names.get('invalid') if names.get('invalid') else []
+vim.command("let data.names.characters = " + str(characters))
+vim.command("let data.names.places = " + str(places))
+vim.command("let data.names.things = " + str(things))
+vim.command("let data.names.invalid = " + str(invalid))
+EOF
   return data
 endfunction
 
@@ -35,20 +36,21 @@ endfunction
 " @return Dictionary containing lists of names parsed.
 function ProseParseYaml(path)
   let data = { 'names': {}, 'compile': {} }
-  py import yaml
-  py import vim
-  py f = open(vim.eval("a:path"), 'r')
-  py parsed = yaml.safe_load(f)
-  py f.close()
-  py names = parsed['names']
-  py characters = names['characters'] if names['characters'] else []
-  py places = names['places'] if names['places'] else []
-  py things = names['things'] if names['things'] else []
-  py invalid = names['invalid'] if names['invalid'] else []
-  py vim.command("let data.names.characters = " + str(characters))
-  py vim.command("let data.names.places = " + str(places))
-  py vim.command("let data.names.things = " + str(things))
-  py vim.command("let data.names.invalid = " + str(invalid))
+python3 << EOF
+import yaml
+import vim
+with open(vim.eval("a:path"), 'r') as f:
+  parsed = yaml.safe_load(f)
+names = parsed.get('names')
+characters = names.get('characters') if names.get('characters') else []
+places = names.get('places') if names.get('places') else []
+things = names.get('things') if names.get('things') else []
+invalid = names.get('invalid') if names.get('invalid') else []
+vim.command("let data.names.characters = " + str(characters))
+vim.command("let data.names.places = " + str(places))
+vim.command("let data.names.things = " + str(things))
+vim.command("let data.names.invalid = " + str(invalid))
+EOF
   return data
 endfunction
 
