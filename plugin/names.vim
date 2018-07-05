@@ -1,6 +1,9 @@
 " Prose tag names to be added to the temporary dictionary.
 let s:tagnames = ['FIXME', 'IMPORTANT', 'NOTE', 'TODO']
 
+" Pattern for negative lookahead/lookbehind for syntax highlighting.
+let s:look_around = '([A-Za-z0-9])'
+
 " Add the names as a syntax rule.
 " @param names All name sets to be added to the syntax rules.
 " @param name_group Name subset to be processed.
@@ -8,7 +11,7 @@ let s:tagnames = ['FIXME', 'IMPORTANT', 'NOTE', 'TODO']
 function s:AddSyntaxRule(names, name_group, rule)
   if !empty(get(a:names, a:name_group))
     for name in a:names[a:name_group]
-      exec 'syn match ' . a:rule . ' /\v' . name . '/'
+      exec 'syn match ' . a:rule . ' /\v' . s:look_around .'@<!(' . name . ')' . s:look_around . '@!/'
     endfor
   endif
 endfunction
