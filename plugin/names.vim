@@ -34,28 +34,25 @@ function ProseApplyNameSpellcheck(names)
   for name in s:tagnames
     silent exec 'spe! ' . name
   endfor
-  if !empty(get(a:names, 'characters'))
-    call s:AddToSpellcheck(a:names.characters)
-  endif
-  if !empty(get(a:names, 'places'))
-    call s:AddToSpellcheck(a:names.places)
-  endif
-  if !empty(get(a:names, 'things'))
-    call s:AddToSpellcheck(a:names.things)
-  endif
+  call s:AddToSpellcheck(a:names, 'characters')
+  call s:AddToSpellcheck(a:names, 'places')
+  call s:AddToSpellcheck(a:names, 'things')
 endfunction
 
 " Insert names for spell checking.
 " Sanitize name patterns before adding them.
-" @param name_patterns Array of name strings.
-function s:AddToSpellcheck(name_patterns)
+" @param names All name sets to be added fo spell checking.
+" @param name_group Name subset to be processed.
+function s:AddToSpellcheck(names, name_group)
+  if !empty(get(a:names, a:name_group))
 python3 << EOF
 import re
 import vim
-for pattern in list(vim.eval("a:name_patterns")):
+for pattern in list(vim.eval("a:names[a:name_group]")):
   pattern = re.sub('[^A-Za-z0-9]', ' ', pattern)
   for name in pattern.split():
     vim.command("silent exec 'spe! {}'".format(name))
 EOF
+  endif
 endfunction
 
