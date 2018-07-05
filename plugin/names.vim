@@ -7,24 +7,20 @@ let s:tagnames = ['FIXME', 'IMPORTANT', 'NOTE', 'TODO']
 " @param names Dictionary containing lists of names.
 function ProseApplyNameSyntax(names)
   " TODO add negative lookahead/lookbehind to prevent contiguous characters
-  if !empty(get(a:names, 'characters'))
-    for name in a:names.characters
-      exec 'syn match ProseCharacter /\v' . name . '/'
-    endfor
-  endif
-  if !empty(get(a:names, 'places'))
-    for name in a:names.places
-      exec 'syn match ProsePlace /\v' . name . '/'
-    endfor
-  endif
-  if !empty(get(a:names, 'things'))
-    for name in a:names.things
-      exec 'syn match ProseThing /\v' . name . '/'
-    endfor
-  endif
-  if !empty(get(a:names, 'invalid'))
-    for name in a:names.invalid
-      exec 'syn match ProseInvalid /\v' . name . '/'
+  call s:AddSyntaxRule(a:names, 'characters', 'ProseCharacter')
+  call s:AddSyntaxRule(a:names, 'places', 'ProsePlace')
+  call s:AddSyntaxRule(a:names, 'things', 'ProseThing')
+  call s:AddSyntaxRule(a:names, 'invalid', 'ProseInvalid')
+endfunction
+
+" Add the names as a syntax rule.
+" @param names All name sets to be added to the syntax rules.
+" @param name_group Name subset to be processed.
+" @param rule Name of the syntax rule.
+function s:AddSyntaxRule(names, name_group, rule)
+  if !empty(get(a:names, a:name_group))
+    for name in a:names[a:name_group]
+      exec 'syn match ' . a:rule . ' /\v' . name . '/'
     endfor
   endif
 endfunction
