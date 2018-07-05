@@ -9,7 +9,7 @@
 " @param path Path to the config file.
 " @param filetype Either json or yaml.
 " @return Structured data parsed from the config file.
-function ProseParseNames(path, filetype)
+function s:ParseNames(path, filetype)
   let data = { 'names': {}, 'compile': {} }
 python3 << EOF
 import vim
@@ -41,11 +41,11 @@ function ProseParseConfig()
   let path = findfile('config.yml')
   let data = 0
   if path != ''
-    let data = ProseParseNames(path, 'yaml')
+    let data = s:ParseNames(path, 'yaml')
   else
     let path = findfile('config.json')
     if path != ''
-      let data = ProseParseNames(path, 'json')
+      let data = s:ParseNames(path, 'json')
     endif
   endif
   return data
