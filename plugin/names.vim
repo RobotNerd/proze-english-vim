@@ -6,6 +6,7 @@ let s:tagnames = ['FIXME', 'IMPORTANT', 'NOTE', 'TODO']
 " These names are highlighted based on the rules in the prose syntax.
 " @param names Dictionary containing lists of names.
 function ProseApplyNameSyntax(names)
+  " TODO add negative lookahead/lookbehind to prevent contiguous characters
   if !empty(get(a:names, 'characters'))
     for name in a:names.characters
       exec 'syn match ProseCharacter /\v' . name . '/'
@@ -38,19 +39,27 @@ function ProseApplyNameSpellcheck(names)
     silent exec 'spe! ' . name
   endfor
   if !empty(get(a:names, 'characters'))
-    for name in a:names.characters
-      silent exec 'spe! ' . name
-    endfor
+    call s:AddToSpellcheck(a:names.characters)
   endif
   if !empty(get(a:names, 'places'))
-    for name in a:names.places
-      silent exec 'spe! ' . name
-    endfor
+    call s:AddToSpellcheck(a:names.places)
   endif
   if !empty(get(a:names, 'things'))
-    for name in a:names.things
-      silent exec 'spe! ' . name
-    endfor
+    call s:AddToSpellcheck(a:names.things)
   endif
+endfunction
+
+" Insert names for spell checking.
+" Sanitize name patterns before adding them.
+" @param name_patterns Array of name strings.
+function s:AddToSpellcheck(name_patterns)
+python3 << EOF
+import re
+import vim
+for pattern in list(vim.eval("a:name_patterns")):
+  pattern = re.sub('[^A-Za-z0-9]', ' ', pattern)
+  for name in pattern.split():
+    vim.command("silent exec 'spe! {}'".format(name))
+EOF
 endfunction
 
