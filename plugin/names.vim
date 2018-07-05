@@ -38,7 +38,6 @@ endfunction
 " These names are highlighted based on the rules in the prose syntax.
 " @param names Dictionary containing lists of names.
 function ProseApplyNameSyntax(names)
-  " TODO add negative lookahead/lookbehind to prevent contiguous characters
   call s:AddSyntaxRule(a:names, 'characters', 'ProseCharacter')
   call s:AddSyntaxRule(a:names, 'places', 'ProsePlace')
   call s:AddSyntaxRule(a:names, 'things', 'ProseThing')
@@ -49,8 +48,6 @@ endfunction
 " Names are parsed from the config file.
 " @param names Dictionary containing lists of names.
 function ProseApplyNameSpellcheck(names)
-  " TODO ignore regex values in names
-  " TODO split words apart
   for name in s:tagnames
     silent exec 'spe! ' . name
   endfor
