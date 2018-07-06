@@ -20,15 +20,17 @@ with open(vim.eval("a:path"), 'r') as f:
   elif vim.eval("a:filetype") == 'yaml':
     import yaml
     parsed = yaml.safe_load(f)
-names = parsed.get('names')
-characters = names.get('characters') if names.get('characters') else []
-places = names.get('places') if names.get('places') else []
-things = names.get('things') if names.get('things') else []
-invalid = names.get('invalid') if names.get('invalid') else []
-vim.command("let data.names.characters = " + str(characters))
-vim.command("let data.names.places = " + str(places))
-vim.command("let data.names.things = " + str(things))
-vim.command("let data.names.invalid = " + str(invalid))
+if parsed:
+  names = parsed.get('names')
+  if names:
+    characters = names.get('characters') if names.get('characters') else []
+    places = names.get('places') if names.get('places') else []
+    things = names.get('things') if names.get('things') else []
+    invalid = names.get('invalid') if names.get('invalid') else []
+    vim.command("let data.names.characters = " + str(characters))
+    vim.command("let data.names.places = " + str(places))
+    vim.command("let data.names.things = " + str(things))
+    vim.command("let data.names.invalid = " + str(invalid))
 EOF
   return data
 endfunction
