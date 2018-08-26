@@ -57,7 +57,7 @@ set columns=80
 
 ## Sample `.vimrc`
 
-Here are sample configuration block that can be added to your `.vimrc`
+Here is a sample configuration block that can be added to your `.vimrc`
 file for prose support.
 
 ```viml
