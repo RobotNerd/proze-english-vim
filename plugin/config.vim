@@ -27,7 +27,7 @@ if parsed:
     for field in fields:
       values = names.get(field) if names.get(field) else []
       values = list(filter(None, values))
-      vim.command(f"let data.names.{values} = {str(values)}")
+      vim.command(f"let data.names.{field} = {str(values)}")
 EOF
   return data
 endfunction
