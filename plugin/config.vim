@@ -11,7 +11,7 @@
 " @return Structured data parsed from the config file.
 function s:ParseNames(path, filetype)
   let data = { 'names': {}, 'compile': {} }
-python3 << EOF
+py3 << EOF
 import vim
 with open(vim.eval("a:path"), 'r') as f:
   if vim.eval("a:filetype") == 'json':
@@ -23,14 +23,11 @@ with open(vim.eval("a:path"), 'r') as f:
 if parsed:
   names = parsed.get('names')
   if names:
-    characters = names.get('characters') if names.get('characters') else []
-    places = names.get('places') if names.get('places') else []
-    things = names.get('things') if names.get('things') else []
-    invalid = names.get('invalid') if names.get('invalid') else []
-    vim.command("let data.names.characters = " + str(characters))
-    vim.command("let data.names.places = " + str(places))
-    vim.command("let data.names.things = " + str(things))
-    vim.command("let data.names.invalid = " + str(invalid))
+    fields = ['characters', 'places', 'things', 'invalid']
+    for field in fields:
+      values = names.get(field) if names.get(field) else []
+      values = list(filter(None, values))
+      vim.command(f"let data.names.{values} = {str(values)}")
 EOF
   return data
 endfunction
