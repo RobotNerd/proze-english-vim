@@ -10,7 +10,7 @@ syn region proseBold start=+__+ end=+\v__|\n\n+
 syn region proseItalic start=+*+ end=+\v*|\n\n+ contains=proseCharacter,prosePlace,proseThing,proseInvalid
 
 " quoted strings
-syn region proseString start=+"+ end=+\v"|\n\n+ contains=proseBold,proseItalic,proseCharacter,prosePlace,proseThing,proseInvalid
+syn region proseString start=+"+ end=+\v"|\n\n+ contains=proseBold,proseItalic,proseCharacter,prosePlace,proseThing,proseInvalid,proseBracket
 
 " Structural markup
 syn match proseStructuralMarkup "\v\c(title|chapter|author|section):(.*)\n"
