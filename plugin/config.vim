@@ -37,12 +37,12 @@ endfunction
 " @return Structured data parsed from the config file. If
 "    no config file is found, return an empty dictionary.
 function ProseParseConfig()
-  let path = findfile('config.yml')
+  let path = findfile('config.yml', './'.';')
   let data = 0
   if path != ''
     let data = s:ParseNames(path, 'yaml')
   else
-    let path = findfile('config.json')
+    let path = findfile('config.json', './'.';')
     if path != ''
       let data = s:ParseNames(path, 'json')
     endif
