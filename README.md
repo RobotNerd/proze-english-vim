@@ -78,3 +78,29 @@ augroup proseConfig
     \ hi SpellBad cterm=underline
 augroup END
 ```
+
+## Troubleshooting
+
+### `ModuleNotFoundError: No module named 'yaml'`
+
+Option 1: Install the yaml package
+
+```
+pip3 install yaml
+```
+
+Option 2: Update PYTHONPATH
+
+If the yaml package is already installed, vim may not have the correct
+path where pip installs packages. First, find where pip installs packages
+with:
+
+```
+pip3 list -v
+```
+
+Set the PYTHONPATH (probably should go in your .zshrc, .bash_rc, or similar).
+
+```
+export PYTHONPATH=$PYTHONPATH:/path/to/pip/site-packages
+```
